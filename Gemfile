@@ -5,7 +5,7 @@ gem 'rails', '4.1.8'
 
 gem 'rails-api'
 
-gem 'spring', :group => :development
+# gem 'spring', :group => :development
 
 
 gem 'sqlite3'
