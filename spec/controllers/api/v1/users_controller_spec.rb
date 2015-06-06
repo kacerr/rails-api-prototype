@@ -106,5 +106,16 @@ describe Api::V1::UsersController do
     end
   end
 
+  describe "DELETE #destroy" do
+    before(:each) do
+      @user = FactoryGirl.create :user
+      delete :destroy, { id: @user.id }, format: :json
+    end
+
+      it "returns 204 status code" do
+        expect(response.status).to eq(204)
+      end
+  end
+
 
 end
