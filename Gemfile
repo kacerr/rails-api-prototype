@@ -12,6 +12,8 @@ gem 'sqlite3'
 
 gem 'active_model_serializers'
 
+gem 'devise'
+
 
 group :test do
   gem "rspec-rails"
