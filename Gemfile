@@ -16,15 +16,17 @@ gem 'devise'
 
 
 group :test do
-  gem "rspec-rails"
-  gem "factory_girl_rails"
-  gem 'ffaker'
 end
 
 group :test, :development do 
   gem "pry-rails"
   gem "pry-byebug"
   gem "pry-rescue"
+
+  # add test gems into development too - Zeus?
+  gem "rspec-rails"
+  gem "factory_girl_rails"
+  gem 'ffaker'
 end
 
 

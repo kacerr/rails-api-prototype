@@ -1,5 +1,23 @@
 require 'rails_helper'
 
-RSpec.describe User, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+describe User do
+  subject { FactoryGirl.build(:user) }
+
+  it "is not valid when email is not present" do
+    subject.email = ""
+    expect(subject).not_to be_valid
+  end
+
+  it "is valid user object" do
+    expect(subject).to be_valid
+  end
+
+
+  it "responds to its attributes" do 
+    expect(subject).to respond_to(:email)
+    expect(subject).to respond_to(:password)
+    expect(subject).to respond_to(:password_confirmation)
+  end
+
+  
 end
