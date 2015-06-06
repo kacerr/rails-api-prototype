@@ -27,6 +27,7 @@ group :test, :development do
   gem "rspec-rails"
   gem "factory_girl_rails"
   gem 'ffaker'
+  gem 'shoulda-matchers', '> 2.7.0', require: false
 end
 
 # sabisu
