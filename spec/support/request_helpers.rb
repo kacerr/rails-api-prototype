@@ -7,7 +7,11 @@ module Request
 
   module HeadersHelpers
     def api_header(version = 1)
-      request.headers['Accept'] = "application/vnd.marketplace.v#{version}" 
+      request.headers['Accept'] = "application/vnd.etconcierge.v#{version}" 
+    end
+
+    def api_authorization_header(token)
+        request.headers['Authorization'] =  token
     end
 
     def api_response_format(format = Mime::JSON)
