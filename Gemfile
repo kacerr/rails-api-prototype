@@ -8,12 +8,13 @@ gem 'rails-api'
 # gem 'spring', :group => :development
 
 
-gem 'sqlite3'
+gem 'mysql2'
 
 gem 'active_model_serializers'
 
 gem 'devise'
 
+gem 'rack-cors'
 
 group :test do
 end
