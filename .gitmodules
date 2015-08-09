@@ -1,0 +1,6 @@
+[submodule "lib/amadeus-client"]
+	path = lib/amadeus-client
+	url = https://kacerr@bitbucket.org/kacerr/et-amadeus-library.git
+[submodule "lib/amadeus"]
+	path = lib/amadeus
+	url = https://kacerr@bitbucket.org/kacerr/et-amadeus-library.git
