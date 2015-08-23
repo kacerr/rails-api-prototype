@@ -16,6 +16,9 @@ gem 'devise'
 
 gem 'rack-cors'
 
+# needed for amadeus library
+gem 'nokogiri'
+
 group :test do
 end
 

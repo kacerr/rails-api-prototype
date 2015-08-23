@@ -11,6 +11,10 @@ Rails.application.routes.draw do
       # We are going to list our resources here
       resources :users, :only => [:index, :show, :create, :update, :destroy]
       resources :sessions, :only => [:create, :destroy]
+      
+      # Amadeus client routes
+      post 'amadeus/raw_query' => 'amadeus_client#raw_query' 
+      post 'amadeus/search_flight' => 'amadeus_client#search_flight' 
     end
   end
 

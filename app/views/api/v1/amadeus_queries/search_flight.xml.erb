@@ -1,0 +1,92 @@
+<Fare_MasterPricerTravelBoardSearch xmlns="http://xml.amadeus.com/FMPTBQ_13_1_1A" >
+  <numberOfUnit>
+    <unitNumberDetail>
+      <numberOfUnits><%=total_number_of_units%></numberOfUnits>
+      <typeOfUnit>PX</typeOfUnit>
+    </unitNumberDetail>
+   <unitNumberDetail>
+      <numberOfUnits><%=number_of_requested_results%></numberOfUnits>
+      <typeOfUnit>RC</typeOfUnit>
+    </unitNumberDetail>
+  </numberOfUnit>
+  <!-- travellers list -->
+  <!-- adults -->
+  <% adults.each do |traveller| %>
+  <paxReference>
+    <ptc><%=traveller[:ptc]%></ptc>
+    <traveller>
+      <ref><%=traveller[:id]%></ref>
+    </traveller>
+  </paxReference>    
+  <% end %>
+  <!-- children -->
+  <% children.each do |traveller| %>
+  <paxReference>
+    <ptc><%=traveller[:ptc]%></ptc>
+    <traveller>
+      <ref><%=traveller[:id]%></ref>
+    </traveller>
+  </paxReference>    
+  <% end %>
+  <!-- end of travellers list -->
+  <!-- itinerary  -->
+  <itinerary>
+    <requestedSegmentRef>
+      <segRef>1</segRef>
+    </requestedSegmentRef>
+    <departureLocalization>
+      <departurePoint>
+        <locationId><%=from%></locationId>
+      </departurePoint>  
+    </departureLocalization>
+    <arrivalLocalization>
+      <arrivalPointDetails>
+        <locationId><%=to%></locationId>
+      </arrivalPointDetails>
+    </arrivalLocalization>
+    <timeDetails>
+      <firstDateTimeDetail>
+        <timeQualifier>TD</timeQualifier>
+        <date><%=departure_date%></date>
+        <time><%=departure_time%></time>
+        <timeWindow>3</timeWindow>
+      </firstDateTimeDetail>
+    </timeDetails>
+    <flightInfo>
+     <flightDetail>
+      <flightType>C</flightType>     
+     </flightDetail>
+   </flightInfo>
+  </itinerary>  
+  <!-- // itinerary  -->
+  <!-- itinerary return -->
+  <itinerary>
+    <requestedSegmentRef>
+      <segRef>1</segRef>
+    </requestedSegmentRef>
+    <departureLocalization>
+      <departurePoint>
+        <locationId><%=to%></locationId>
+      </departurePoint>  
+    </departureLocalization>
+    <arrivalLocalization>
+      <arrivalPointDetails>
+        <locationId><%=from%></locationId>
+      </arrivalPointDetails>
+    </arrivalLocalization>
+    <timeDetails>
+      <firstDateTimeDetail>
+        <timeQualifier>TD</timeQualifier>
+        <date><%=return_date%></date>
+        <time><%=return_time%></time>
+        <timeWindow>3</timeWindow>
+      </firstDateTimeDetail>
+    </timeDetails>
+    <flightInfo>
+     <flightDetail>
+      <flightType>C</flightType>     
+     </flightDetail>
+   </flightInfo>
+  </itinerary>  
+  <!-- // itinerary return -->
+</Fare_MasterPricerTravelBoardSearch>
