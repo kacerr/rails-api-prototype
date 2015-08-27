@@ -31,7 +31,7 @@ class Api::V1::UsersController < ApplicationController
   end  
 
   def index
-    respond_with User.all
+    respond_with current_user
   end
 
   private
