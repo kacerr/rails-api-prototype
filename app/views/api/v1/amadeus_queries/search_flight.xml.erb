@@ -28,6 +28,16 @@
     </traveller>
   </paxReference>    
   <% end %>
+  <!--infants -->
+  <% infants.each do |traveller| %>
+  <paxReference>
+    <ptc><%=traveller[:ptc]%></ptc>
+    <traveller>
+      <ref><%=traveller[:id]%></ref>
+      <infantIndicator>1</infantIndicator> 
+    </traveller>
+  </paxReference>    
+  <% end %>
   <!-- end of travellers list -->
   <!-- itinerary  -->
   <itinerary>
@@ -49,12 +59,12 @@
         <timeQualifier>TD</timeQualifier>
         <date><%=departure_date%></date>
         <time><%=departure_time%></time>
-        <timeWindow>3</timeWindow>
+        <timeWindow><%=departure_time_window%></timeWindow>
       </firstDateTimeDetail>
     </timeDetails>
     <flightInfo>
      <flightDetail>
-      <flightType>C</flightType>     
+      <flightType><%=flight_type%></flightType>     
      </flightDetail>
    </flightInfo>
   </itinerary>  
@@ -79,12 +89,12 @@
         <timeQualifier>TD</timeQualifier>
         <date><%=return_date%></date>
         <time><%=return_time%></time>
-        <timeWindow>3</timeWindow>
+        <timeWindow><%=return_time_window%></timeWindow>
       </firstDateTimeDetail>
     </timeDetails>
     <flightInfo>
      <flightDetail>
-      <flightType>C</flightType>     
+      <flightType><%=flight_type%></flightType>     
      </flightDetail>
    </flightInfo>
   </itinerary>  

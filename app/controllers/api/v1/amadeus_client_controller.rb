@@ -40,26 +40,40 @@ class Api::V1::AmadeusClientController < ApplicationController
       traveller[:id] = counter
       children << traveller
     end
-=begin
+
+    infants = []
+    counter = 0
     for i in (params[:infants].to_i).downto(1)
       counter += 1
       traveller = {}
-      traveller[:ptc] = "ADT"
+      traveller[:ptc] = "INF"
       traveller[:id] = counter
+      infants << traveller
     end
-=end
 
     template_locals = {}
     template_locals[:from] = params[:from]
     template_locals[:to] = params[:to]
     template_locals[:adults] = adults
     template_locals[:children] = children
+    template_locals[:infants] = infants
     template_locals[:total_number_of_units] = params[:adults].to_i + params[:children].to_i
     template_locals[:number_of_requested_results] = 10
+
     template_locals[:departure_date] = params[:departureDate].to_datetime.strftime("%d%m%y")
     template_locals[:departure_time] = params[:departureDate].to_datetime.strftime("%H%M")
+    template_locals[:departure_time_window] = 3
+    template_locals[:departure_time_window] = params[:departureTimeWindow] if params[:departureTimeWindow].to_i>0
+
     template_locals[:return_date] = params[:returnDate].to_datetime.strftime("%d%m%y")
     template_locals[:return_time] = params[:returnDate].to_datetime.strftime("%H%M")
+    template_locals[:return_time_window] = 3
+    template_locals[:return_time_window] = params[:returnTimeWindow] if params[:returnTimeWindow].to_i>0
+
+    template_locals[:flight_type] = "C"
+    template_locals[:flight_type] = "D" if params[:directFlight]=='true'
+
+
 
     request = render_to_string "api/v1/amadeus_queries/search_flight.xml", locals: template_locals
     # clean up comments from XML
