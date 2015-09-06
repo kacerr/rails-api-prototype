@@ -34,4 +34,10 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+
+  config.etlogger = ActiveSupport::OrderedOptions.new 
+  config.etlogger.enabled = true
+  config.etlogger.save_xml_transactions = true 
+  config.etlogger.path = Rails.root.to_s + "/log/et-logger/"
+
 end

@@ -80,6 +80,7 @@ class Api::V1::AmadeusClientController < ApplicationController
     doc = Nokogiri::XML::Document.parse request
     doc.xpath('//comment()').remove
     request = doc.serialize.gsub(/\n(\s*\n)+/,"\n")
+    $et_logger.save_to_file(1, request, { prefix: 'xml-request'})
 
 
     ac = Amadeus::AmadeusClient.new "AMADEUS"
@@ -89,18 +90,70 @@ class Api::V1::AmadeusClientController < ApplicationController
     ac.endpoint = ac.get_endpoint_target_by_label 'MasterPricer'
     soap_request = ac.generate_soap_request
     soap_result = ac.post_xml Amadeus::AmadeusClient::MAIN_URL, soap_request
+    
+    $et_logger.save_to_file(1, soap_result.body, { prefix: 'xml-response'})
     doc = Nokogiri::XML(soap_result.body)
+
+
+    recommendations = []
+    ### --- parse XML document 
+    doc.remove_namespaces!
+
+    doc.xpath("//Body/Fare_MasterPricerTravelBoardSearchReply/recommendation").each do |r|
+      recommendation = {}
+      recommendation[:price_1] = r.xpath("recPriceInfo/monetaryDetail[1]/amount").first.content
+      recommendation[:price_2] = r.xpath("recPriceInfo/monetaryDetail[2]/amount").first.content
+
+      counter = 0
+      r.xpath("segmentFlightRef/referencingDetail").each do |d|
+        if d.xpath("refQualifier").first.content == "S"
+          counter += 1
+          flight_detail_number = d.xpath("refNumber").first.content
+          group_of_flights = doc.xpath("//Body/Fare_MasterPricerTravelBoardSearchReply/flightIndex[#{counter}]/groupOfFlights[#{flight_detail_number}]")
+
+          attr_name = "group_of_flights_#{counter}".to_sym
+          recommendation[attr_name] = parse_group_of_flights group_of_flights
+        end
+      end
+      recommendations << recommendation
+    end
+
+    ### --- parse XML document end
+
     output = {}
-    output["xmlContent"] = doc.serialize
-    output["resultCode"] = soap_result.code
-    output["header"] = soap_result.header
-    output["timestamp"] = Time.now.to_s
-    output["request"] = request
+    output[:xmlContent] = doc.serialize
+    output[:resultCode] = soap_result.code
+    output[:header] = soap_result.header
+    output[:timestamp] = Time.now.to_s
+    output[:request] = request
+    output[:parsedRecommendations] = recommendations.to_json
 
     finished_time = Time.now
-    output["timeToProcess"] = finished_time - start_time
-    render json: output
+    output[:timeToProcess] = finished_time - start_time
 
+    #binding.pry
+    #a=1
+
+    render json: output
+  end
+
+  # --- this needs to be moved into another place: amadeus::parser ... ???
+  def parse_group_of_flights data_to_parse
+    out = {}
+    counter = 0
+    data_to_parse.xpath("flightDetails").each do |fd|
+      counter += 1
+      flight_segment_detail = {}
+      flight_segment_detail[:dateOfDeparture] = fd.xpath("flightInformation/productDateTime/dateOfDeparture").first.content
+      flight_segment_detail[:timeOfDeparture] = fd.xpath("flightInformation/productDateTime/timeOfDeparture").first.content
+      flight_segment_detail[:dateOfArrival] = fd.xpath("flightInformation/productDateTime/dateOfArrival").first.content
+      flight_segment_detail[:timeOfArrival] = fd.xpath("flightInformation/productDateTime/timeOfArrival").first.content
+      flight_segment_detail[:from] = fd.xpath("flightInformation/location[1]/locationId").first.content
+      flight_segment_detail[:to] = fd.xpath("flightInformation/location[2]/locationId").first.content
+      attr_name = "segment_#{counter}".to_sym
+      out[attr_name] = flight_segment_detail
+    end
+    out
 
   end
 end
