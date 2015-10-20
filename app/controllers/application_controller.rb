@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   if ::Rails.application.config.etlogger
     require "./lib/et_support/logger.rb"
     unless $et_logger 
-      $et_logger =ET::Logger.instance
+      $et_logger = ET::Logger.instance
       $et_logger.configure (
         {
           path: ::Rails.application.config.etlogger.path

@@ -35,8 +35,8 @@ group :test, :development do
 end
 
 # sabisu
-gem 'sabisu_rails', github: "IcaliaLabs/sabisu-rails"
-gem 'compass-rails', github: 'Compass/compass-rails'
+gem 'sabisu_rails'#, github: "IcaliaLabs/sabisu-rails"
+gem 'compass-rails'#, github: 'Compass/compass-rails'
 gem 'furatto'
 gem 'font-awesome-rails'
 gem 'simple_form'

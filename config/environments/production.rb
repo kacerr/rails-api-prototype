@@ -78,5 +78,7 @@ Rails.application.configure do
 
   config.etlogger = ActiveSupport::OrderedOptions.new 
   config.etlogger.enabled = false
+  config.etlogger.save_xml_transactions = true 
+  config.etlogger.path = Rails.root.to_s + "/log/et-logger/"
 
 end
